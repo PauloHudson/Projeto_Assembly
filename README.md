@@ -2,7 +2,7 @@
 
 ## Descrição do Projeto
 
-Este projeto simula o jogo de memória GENIUS utilizando o simulador edsim51 e programação em Assembly. O objetivo do jogo é desafiar o jogador a repetir sequências de luzes que aumentam de complexidade conforme o jogo progride. A sequência de luzes é gerada aleatoriamente pelo sistema e salva na memória. O jogador deve reproduzir a sequência correta utilizando os botões de entrada. Caso erre, o jogo será encerrado.
+Este projeto simula o jogo de memória GENIUS utilizando o simulador edsim51 e programação em Assembly. O objetivo do jogo é desafiar o jogador a repetir sequências de luzes . O jogador deve reproduzir a sequência correta utilizando os botões de entrada. Caso erre, o jogo será encerrado.
 
 ## Desenvolvimento
 
@@ -17,11 +17,9 @@ O desenvolvimento do projeto será feito em várias etapas:
    - O sistema comparará a sequência inserida pelo usuário com a sequência previamente gerada.
 
 3. **Validação e Feedback**:
-   - Se a sequência estiver correta, uma nova luz será adicionada, aumentando o desafio.
+   - Se a sequência estiver correta, uma mensagem será declarada.
    - Caso contrário, o jogo será encerrado e uma mensagem de erro será exibida.
 
-4. **Memória e Controle**:
-   - A memória será utilizada para armazenar a sequência de luzes e as entradas do usuário, permitindo a comparação precisa.
 
 ## Como Executar
 
