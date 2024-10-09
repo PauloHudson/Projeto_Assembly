@@ -1,4 +1,4 @@
-# Projeto GENIUS em Assembly
+# Projeto Sequência De luzesem Assembly
 
 ## Descrição do Projeto
 
