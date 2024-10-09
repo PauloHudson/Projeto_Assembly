@@ -1,4 +1,4 @@
-# Projeto Sequência De luzesem Assembly
+# Projeto Sequência De luzes em Assembly
 
 ## Descrição do Projeto
 
