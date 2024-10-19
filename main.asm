@@ -45,11 +45,32 @@ MOSTRAR:
 
 ; --- Função para ler a entrada do jogador ---
 leituraTeclado:
-    ; Aqui você pode colocar o código que lê o teclado numérico
-    ; Para simplificação, vamos apenas retornar um valor fixo, como simulação.
+ MOV A, P1              ; Lê o valor da porta P1
+    ANL A, #0F0H          ; Máscara para considerar apenas os LEDs (P1.4 a P1.7)
     
-    MOV A, #01H  ; Simula a entrada de um valor de tecla, como '1'
-    RET          ; Retorna para o código chamador
+    ; Agora vamos verificar qual tecla foi pressionada
+    CJNE A, #80H, TECLA1   ; Verifica se a tecla 1 foi pressionada (P1.7 = 1)
+    MOV R0, #01H           ; Tecla 1 pressionada
+    RET
+    
+TECLA1:
+    CJNE A, #40H, TECLA2   ; Verifica se a tecla 2 foi pressionada (P1.6 = 1)
+    MOV R0, #02H           ; Tecla 2 pressionada
+    RET
+
+TECLA2:
+    CJNE A, #20H, TECLA3   ; Verifica se a tecla 3 foi pressionada (P1.5 = 1)
+    MOV R0, #03H           ; Tecla 3 pressionada
+    RET
+
+TECLA3:
+    CJNE A, #10H, NENHUMA  ; Verifica se a tecla 4 foi pressionada (P1.4 = 1)
+    MOV R0, #04H           ; Tecla 4 pressionada
+    RET
+
+NENHUMA:
+    MOV R0, #00H           ; Nenhuma tecla pressionada
+    RET
 
 ;------------------------------------
 lerEntrada:
