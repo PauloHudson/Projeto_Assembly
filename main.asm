@@ -34,7 +34,8 @@ mostraSequencia:
     MOV DPTR, #SEQUENCE    ; Ponteiro para sequência de LEDs
 
 MOSTRAR:
-    MOVX A, @DPTR          ; Carrega o próximo valor da sequência
+    MOVC A, @A+DPTR    
+	MOV R4, A      ; Carrega o próximo valor da sequência
     ACALL acendeLED        ; Acende o LED correspondente
     ACALL delay            ; Delay entre os LEDs
     INC DPTR               ; Próximo LED na sequência
@@ -131,7 +132,7 @@ ACERTO:
 
 ; --- Função para acender um LED ---
 acendeLED:
-    MOV A, @R0             ; Carrega valor da sequência de LEDs
+    MOV A, R4            ; Carrega valor da sequência de LEDs
     CJNE A, #01H, PROX_LED1
     SETB LED1              ; Acende o LED 1
     SJMP DELAY_LED
