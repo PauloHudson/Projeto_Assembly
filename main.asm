@@ -144,11 +144,11 @@ NEXT_CHECK:
     JMP ACERTO             ; Se a sequência estiver correta, pula para acerto
 
 ERRO:
-    ; Colocar feedback de erro aqui
+	ACALL EXIBE_MSG_PERDEU
     JMP START
 
 ACERTO:
-    ; Colocar feedback de acerto aqui
+    ACALL EXIBE_MSG_GANHOU
     RET
 
 ; --- Função para acender um LED ---
@@ -188,3 +188,231 @@ delay:
 
 ; --- Sequência fixa (pode ser aleatória) ---
 SEQUENCE: DB 01H, 02H, 03H, 04H
+
+
+
+
+
+;#########################################
+;										 ;
+;										 ;
+;   AQUI INICIA A LOGICA DE USAR O LCD   ;
+;										 ;
+;										 ;
+;#########################################
+
+;CREDITOS DE USO: toda a parte de configuração do LDC foi pega do exemplo passado via MOODLE: "Aula10_01-LCD.asm"
+
+
+lcd_init:
+
+	CLR RS
+
+	CLR P1.7		
+	CLR P1.6		
+	SETB P1.5		
+	CLR P1.4		
+
+	SETB EN		
+	CLR EN		
+
+	CALL delay		
+					
+	SETB EN		
+	CLR EN		
+					
+
+	SETB P1.7		
+
+	SETB EN		
+	CLR EN		
+				
+	CALL delay		
+
+	CLR P1.7		
+	CLR P1.6		
+	CLR P1.5		
+	CLR P1.4		
+
+	SETB EN		
+	CLR EN		
+
+	SETB P1.6		
+	SETB P1.5		
+
+	SETB EN		
+	CLR EN		
+
+	CALL delay
+
+
+; display on/off control
+; the display is turned on, the cursor is turned on and blinking is turned on
+	CLR P1.7		; |
+	CLR P1.6		; |
+	CLR P1.5		; |
+	CLR P1.4		; | high nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	SETB P1.7		; |
+	SETB P1.6		; |
+	SETB P1.5		; |
+	SETB P1.4		; | low nibble set
+
+	SETB EN		; |
+	CLR EN		; | negative edge on E
+
+	CALL delay		; wait for BF to clear
+	RET
+
+
+sendCharacter:
+	SETB RS  		
+	MOV C, ACC.7	
+	MOV P1.7, C		
+	MOV C, ACC.6	
+	MOV P1.6, C		
+	MOV C, ACC.5	
+	MOV P1.5, C			
+	MOV C, ACC.4		
+	MOV P1.4, C			
+
+	SETB EN			
+	CLR EN			
+
+	MOV C, ACC.3		
+	MOV P1.7, C			
+	MOV C, ACC.2		
+	MOV P1.6, C			
+	MOV C, ACC.1		
+	MOV P1.5, C			
+	MOV C, ACC.0		
+	MOV P1.4, C		
+
+	SETB EN			
+	CLR EN			
+
+	CALL delay			
+	RET
+
+;Posiciona o cursor na linha e coluna desejada.
+;Escreva no Acumulador o valor de endereço da linha e coluna.
+;|--------------------------------------------------------------------------------------|
+;|linha 1 | 00 | 01 | 02 | 03 | 04 |05 | 06 | 07 | 08 | 09 |0A | 0B | 0C | 0D | 0E | 0F |
+;|linha 2 | 40 | 41 | 42 | 43 | 44 |45 | 46 | 47 | 48 | 49 |4A | 4B | 4C | 4D | 4E | 4F |
+;|--------------------------------------------------------------------------------------|
+posicionaCursor:
+	CLR RS	         
+	SETB P1.7		    
+	MOV C, ACC.6		
+	MOV P1.6, C			
+	MOV C, ACC.5		
+	MOV P1.5, C			
+	MOV C, ACC.4		
+	MOV P1.4, C			
+
+	SETB EN			
+	CLR EN			
+
+	MOV C, ACC.3	
+	MOV P1.7, C		
+	MOV C, ACC.2	
+	MOV P1.6, C		
+	MOV C, ACC.1	
+	MOV P1.5, C		
+	MOV C, ACC.0	
+	MOV P1.4, C		
+
+	SETB EN			
+	CLR EN			
+
+	CALL delay			
+	RET
+
+
+;Retorna o cursor para primeira posição sem limpar o display
+retornaCursor:
+	CLR RS	      
+	CLR P1.7		
+	CLR P1.6		
+	CLR P1.5		
+	CLR P1.4		
+
+	SETB EN		
+	CLR EN		
+
+	CLR P1.7		
+	CLR P1.6		
+	SETB P1.5		
+	SETB P1.4		
+
+	SETB EN		
+	CLR EN		
+
+	CALL delay		
+	RET
+
+
+clearDisplay:
+	CLR RS	      
+	CLR P1.7		
+	CLR P1.6		
+	CLR P1.5		
+	CLR P1.4	
+
+	SETB EN		
+	CLR EN		
+
+	CLR P1.7	
+	CLR P1.6	
+	CLR P1.5	
+	SETB P1.4		
+
+	SETB EN		
+	CLR EN		
+
+	CALL delay		
+	RET
+
+
+
+EXIBE_MSG_GANHOU:
+	acall lcd_init
+	mov A, #06h
+	ACALL posicionaCursor 
+	MOV A, #'G'
+	ACALL sendCharacter	
+	MOV A, #'A'
+	ACALL sendCharacter	
+	MOV A, #'N'
+	ACALL sendCharacter	
+	MOV A, #'H'
+	ACALL sendCharacter	
+	MOV A, #'O'
+	ACALL sendCharacter	
+	MOV A, #'U'
+	ACALL sendCharacter	
+	ACALL retornaCursor
+	JMP $
+
+
+EXIBE_MSG_PERDEU:
+	acall lcd_init
+	mov A, #06h
+	ACALL posicionaCursor 
+	MOV A, #'P'
+	ACALL sendCharacter	
+	MOV A, #'E'
+	ACALL sendCharacter	
+	MOV A, #'R'
+	ACALL sendCharacter	
+	MOV A, #'D'
+	ACALL sendCharacter	
+	MOV A, #'E'
+	ACALL sendCharacter	
+	MOV A, #'U'
+	ACALL sendCharacter	
+	ACALL retornaCursor
+	JMP $
