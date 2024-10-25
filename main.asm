@@ -22,6 +22,13 @@ INT_TEMP0:
     MOV TL0, #0 
     RETI
 
+;
+;
+; Lembrete para o eu do futuro: esse bloco de codigo nao esta funcionando, 
+; os leds estavam ligando pela funcao DELAY_LED e nao por aq. Se quiser testar,
+; é so pegar esse versao e deltar essas funcoes ai, que n muda nada =(.
+;
+
 ; --- Funções Auxiliares ---
 ; Função para acender LEDs da sequência gerada
 ACENDE_LED:
@@ -55,12 +62,16 @@ DELAY_LED:
     ACALL DELAY_LONGO   
     CLR LED1
 	ACALL DELAY_MAIOR 
+	SETB LED1 
     CLR LED2
 	ACALL DELAY_MAIOR 
+	SETB LED2
     CLR LED3
 	ACALL DELAY_MAIOR 
+	SETB LED3
     CLR LED4
 	ACALL DELAY_MAIOR 
+	SETB LED4
     RET
 
 ; Função de delay longo para dar tempo entre os LEDs
