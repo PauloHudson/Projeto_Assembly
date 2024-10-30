@@ -25,13 +25,24 @@ O desenvolvimento do projeto será feito em várias etapas:
 
 1. Abra o simulador edsim51.
 2. Carregue o código Assembly.
-   
-_TODO: Adicionar passso a passo mais detalhado de como jogar_
+3. Defina a frequencia em 100
+4. Configure os pinos corretamente
 
+   - OBS: Para um tutotial mais detalhado visite a apresentação Power Point
+     
 ## Imagens do Simulador
 
-_TODO: Adicionar imagens do simulador jogando o GENIUS._
+A jogar, sua experiencia deve ser algo parecido com isso:
+- Inicio do jogo 
+![image](https://github.com/user-attachments/assets/768a15c0-434b-4be8-a82e-e57240954813)
+- Enquanto os LEDs piscam
+![image](https://github.com/user-attachments/assets/c10812f7-ee53-4e6d-a150-07ebd58fc921)
+- Ao errar a sequencia
+![image](https://github.com/user-attachments/assets/7b0a534c-8b29-4715-a1be-65474066851f)
+- Ao acertar a sequencia
+![image](https://github.com/user-attachments/assets/7bea653f-c719-4461-a185-0771633aa6aa)
+
 
 ## Conclusões
 
-_TODO: Inserir conclusões após a finalização do projeto._
+Com isso, concluimos a desenvolvimento e execução do projeto "Genius com Assembly"
