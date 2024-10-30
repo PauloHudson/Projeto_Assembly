@@ -13,6 +13,7 @@ ACALL lcd_init
 
 ;------------------
 INICIAR_JOGO: ;main
+	;chamei game1 e 2 para printar no lcd
 	ACALL GAME1
 	ACALL GAME2
     ACALL SEQ_1
@@ -23,9 +24,10 @@ INICIAR_JOGO: ;main
    
 ;--------------------------------------
 GAME1:
+	;usa a lógica já utilizada em aula
 	ACALL Escreve_MSGM_INICIOGAME1
 	MOV R4, #1H	
-	ACALL DELAY_LOOP
+	ACALL DELAY_LOOP ;delay de 100
 	RET
 	
 GAME2:
@@ -37,25 +39,26 @@ GAME2:
 	
 
 COMPARA_SEQ:
+	;compara o #30 com o #40
 	MOV R0, #30H
 	MOV R1, #40H
 	MOV R7, #5 ;limitar em apenas 5 comparações
 	
 LOOP_COMPARA:
-	MOV A, @R0
-	MOV B, @R1
-	INC R0
+	MOV A, @R0 ;movo para a os valores de #30 que estão em r0
+	MOV B, @R1 ;movo para r1 os valores de #40 que estão em r1
+	INC R0 ;pula pro próximo
 	INC R1
-	CJNE A, B, ERROU
-	DJNZ R7, LOOP_COMPARA
-	ACALL ACERTOU
+	CJNE A, B, ERROU ;se igual continua se não error
+	DJNZ R7, LOOP_COMPARA ;continua até o x5
+	ACALL ACERTOU ; chama o display acertou
 	RET
 	
 
 
 ERROU:
 	ACALL ESCREVE_MSGM_ERROU
-	MOV R4, #15H	;delay maior
+	MOV R4, #10H	;delay maior
 	ACALL DELAY_LOOP
 	ACALL clearDisplay
 	MOV R4, #10
@@ -64,7 +67,7 @@ ERROU:
 
 ACERTOU:
 	ACALL ESCREVE_MSGM_GANHOU
-	MOV R4, #15H	;delay maior
+	MOV R4, #10H	;delay maior
 	ACALL DELAY_LOOP
 	ACALL clearDisplay
 	MOV R4, #10
@@ -84,12 +87,14 @@ pisca_LED2:
 	ACALL DELAY_LOOP
 	SETB LED2
 	RET
+
 pisca_LED3:
     CLR LED3            ; Acende LED 3
 	MOV R4, #05 		;loop simples x5
 	ACALL DELAY_LOOP
 	SETB LED3
 	RET
+
 pisca_LED4:
     CLR LED4            ; Acende LED 4
 	MOV R4, #05 	;loop simples x5
@@ -105,6 +110,7 @@ pisca_LED5:
 	RET
 
 ;estamos jogando no endereço 30. para fazer a comparação com o 40.
+;por meio de uma sequencia fixa.
 SEQ_1:
 	MOV 30H, #03 
 	MOV 31H, #04
@@ -115,9 +121,10 @@ SEQ_1:
 
 SEQ_2:
 	MOV 30H, #01
-	MOV 30H, #04
-	MOV 30H, #02
-	MOV 30H, #03
+	MOV 31H, #04
+	MOV 32H, #02
+	MOV 33H, #03
+	MOV 34H, #05
 	RET
 	
 MSGM_INICIAR_GAME1:
@@ -181,7 +188,7 @@ Escreve_MSGM_INICIOGAME2:
 
 
 ;mostrar no led
-
+;sequencia 1.
 MOSTRA_SEQ1:
 	ACALL PISCA_LED3
 	ACALL PISCA_LED4
@@ -189,7 +196,14 @@ MOSTRA_SEQ1:
 	ACALL PISCA_LED1
 	ACALL PISCA_LED5
     RET
-     
+    
+MOSTRA_SEQ2:
+	ACALL PISCA_LED1
+	ACALL PISCA_LED4
+	ACALL PISCA_LED2
+	ACALL PISCA_LED3
+	ACALL PISCA_LED5
+    RET
 	
 
 ESPERA_ENTRADA:
