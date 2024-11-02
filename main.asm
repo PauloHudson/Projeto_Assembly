@@ -431,7 +431,7 @@ clearDisplay:
 	SETB EN		; |
 	CLR EN		; | negative edge on E
 
-	MOV R6, #40
+	MOV R6, #15
 	rotC:
 	CALL delay		; wait for BF to clear
 	DJNZ R6, rotC
