@@ -41,6 +41,9 @@ A jogar, sua experiencia deve ser algo parecido com isso:
 ![image](https://github.com/user-attachments/assets/7b0a534c-8b29-4715-a1be-65474066851f)
 - Ao acertar a sequencia
 ![image](https://github.com/user-attachments/assets/7bea653f-c719-4461-a185-0771633aa6aa)
+- Circuito
+![desk](https://github.com/user-attachments/assets/009ad695-cc2f-4743-9d1f-198c677c8d24)
+
 
 
 ## Conclusões
