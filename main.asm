@@ -17,7 +17,7 @@ INICIAR_JOGO: ;main
 	ACALL GAME1
 	ACALL GAME2
     ACALL SEQ_1
-	ACALL Escreve_MSGM_INTRA_GAME
+	ACALL Escreve_MSGM_INTRA_GAME ;chama as mensagens durante o jogo
 	ACALL Escreve_MSGM_INTRA_GAME_LN2
 	ACALL MOSTRA_SEQ1
 	ACALL ESPERA_ENTRADA
@@ -28,7 +28,7 @@ INICIAR_JOGO: ;main
 GAME1:
 	;usa a lógica já utilizada em aula
 	ACALL Escreve_MSGM_INICIOGAME1
-	MOV R4, #1H	
+	MOV R4, #1H	;set do delay
 	ACALL DELAY_LOOP ;delay de 100
 	RET
 	
@@ -59,47 +59,47 @@ LOOP_COMPARA:
 ERROU:
 	ACALL ESCREVE_MSGM_ERROU
 	MOV R4, #10H	;delay maior
+	ACALL DELAY_LOOP 
+	ACALL clearDisplay ;limpa a tela
+	MOV R4, #10 ;outro delay
 	ACALL DELAY_LOOP
-	ACALL clearDisplay
-	MOV R4, #10
-	ACALL DELAY_LOOP
-	LJMP INICIAR_JOGO
+	LJMP INICIAR_JOGO ;reinicia o jogo 
 
 ACERTOU:
 	ACALL ESCREVE_MSGM_GANHOU
 	MOV R4, #10H	;delay maior
 	ACALL DELAY_LOOP
-	ACALL clearDisplay
+	ACALL clearDisplay ; limpa a tela
 	MOV R4, #10
-	ACALL DELAY_LOOP
-	RET
+	ACALL DELAY_LOOP ; outro delay
+	RET ; restart
 ;----------------------------
 pisca_LED1:
     CLR LED1            ; Acende LED 1
 	MOV R4, #05			;loop simples x5
 	ACALL DELAY_LOOP
-	SETB LED1
+	SETB LED1 ;apaga
 	RET
 
 pisca_LED2:
     CLR LED2            ; Acende LED 2
 	MOV R4, #05			;loop simples x5
 	ACALL DELAY_LOOP
-	SETB LED2
+	SETB LED2 ;apaga
 	RET
 
 pisca_LED3:
     CLR LED3            ; Acende LED 3
 	MOV R4, #05 		;loop simples x5
 	ACALL DELAY_LOOP
-	SETB LED3
+	SETB LED3 ;apaga
 	RET
 
 pisca_LED4:
     CLR LED4            ; Acende LED 4
 	MOV R4, #05 	;loop simples x5
 	ACALL DELAY_LOOP ;loop simples
-	SETB LED4
+	SETB LED4 ;apaga
 	RET
 	
 pisca_LED5:
@@ -112,7 +112,7 @@ pisca_LED5:
 ;estamos jogando no endereço 30. para fazer a comparação com o 40.
 ;por meio de uma sequencia fixa.
 SEQ_1:
-	MOV 30H, #03 
+	MOV 30H, #03 ;adiciona manualmente as respectiva sequencia, no endereço 30, para se comparar com o usuario
 	MOV 31H, #04
 	MOV 32H, #02
 	MOV 33H, #01
@@ -127,7 +127,7 @@ SEQ_2:
 	MOV 34H, #05
 	RET
 	
-MSGM_INICIAR_GAME1:
+MSGM_INICIAR_GAME1: ;basicamente são as mensagens que serão exibidas em suas respectivas funções de escrever no display
   DB "ACERTE!"
   DB 00h
 MSGM_INICIAR_GAME2:  
@@ -151,15 +151,15 @@ MSGM_GANHOU:
   
 ;---------------------------
 Escreve_MSGM_GANHOU:
-	ACALL clearDisplay
+	ACALL clearDisplay ; limpa se o display
 	;delayzinho
 		MOV R4, #02 	;loop simples 
 		ACALL DELAY_LOOP ;loop simples
 	;
-	MOV A, #04h
-	ACALL posicionaCursor
-	MOV DPTR,#MSGM_GANHOU           
-	ACALL escreveStringROM
+	MOV A, #04h ;indica o inicio da mensagem 
+	ACALL posicionaCursor	;posiciona o começo indicado
+	MOV DPTR,#MSGM_GANHOU           ;respectiva mensagem
+	ACALL escreveStringROM	;printa a mensagem
 	RET
 
 Escreve_MSGM_ERROU:
@@ -168,14 +168,15 @@ Escreve_MSGM_ERROU:
 		MOV R4, #02 	;loop simples x5
 		ACALL DELAY_LOOP ;loop simples
 	;
-	MOV A, #04h
-	ACALL posicionaCursor
-	MOV DPTR,#MSGM_ERROU            
-	ACALL escreveStringROM
+	MOV A, #04h  ;indica o inicio da mensagem 
+	ACALL posicionaCursor ;posiciona o começo indicado
+	MOV DPTR,#MSGM_ERROU             ;respectiva mensagem
+	ACALL escreveStringROM ;printa a mensagem
 	RET
 ;---------------------------
 
 ;START CODE
+;segue a mesma lógica das funçõesa acima
 Escreve_MSGM_INICIOGAME1:
 	MOV A, #04h ;CIMA 
 	ACALL posicionaCursor
@@ -209,7 +210,7 @@ Escreve_MSGM_INTRA_GAME_LN2:
 ;mostrar no led
 ;sequencia 1.
 MOSTRA_SEQ1:
-	ACALL PISCA_LED3
+	ACALL PISCA_LED3 ;chama a função que pisca o led na sequencia que quero
 	ACALL PISCA_LED4
 	ACALL PISCA_LED2
 	ACALL PISCA_LED1
@@ -237,7 +238,7 @@ ESPERA_LOOP:
     SJMP ESPERA_LOOP
 
 CAPTURA_TECLA_7:
-    MOV A, #01H
+    MOV A, #01H ;mov o valor #01 para o endreço a ser comparado
 	ACALL PISCA_LED1
     SJMP ARMAZENA_TECLA
 
@@ -265,7 +266,7 @@ ARMAZENA_TECLA:
     MOV @R0, A          
     INC R0              ; Incrementa o ponteiro de memÃ³ria
     INC R2              ; Incrementa o contador de entradas
-    CJNE R2, #05H, ESPERA_LOOP ; Captura 4 entradas, entao sai do loop
+    CJNE R2, #05H, ESPERA_LOOP ; Captura 5 entradas, entao sai do loop
     RET
 
 DELAY_LOOP:
