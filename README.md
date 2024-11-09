@@ -29,7 +29,11 @@ O desenvolvimento do projeto será feito em várias etapas:
 4. Configure os pinos corretamente
 
    - OBS: Para um tutotial mais detalhado visite a apresentação Power Point
-     
+
+## Fluxo do Jogo
+![image](https://github.com/user-attachments/assets/8798688a-e4bb-4188-8dae-cdeeec1b9b8d)
+
+
 ## Imagens do Simulador
 
 A jogar, sua experiencia deve ser algo parecido com isso:
